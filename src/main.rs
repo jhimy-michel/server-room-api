@@ -12,6 +12,7 @@ use std::time::Duration;
 use tokio::time::interval;
 use tokio_stream::wrappers::IntervalStream;
 
+
 #[derive(Serialize)]
 struct RackTemperature {
     id: String,
@@ -63,7 +64,7 @@ fn generate_rack_data() -> Vec<RackTemperature> {
 
 #[get("/server-room-stream")]
 async fn server_room_stream(data: web::Data<Arc<AppState>>) -> impl Responder {
-    let stream = IntervalStream::new(interval(Duration::from_secs(1))).map(move |_| {
+    let stream = IntervalStream::new(interval(Duration::from_secs(5))).map(move |_| {
         if !data.is_streaming.load(Ordering::Relaxed) {
             return Ok::<_, actix_web::Error>(Bytes::from("event: stop\ndata: Stream stopped\n\n"));
         }
@@ -134,7 +135,7 @@ async fn main() -> std::io::Result<()> {
             .service(start_stream)
             .service(stop_stream)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(format!("0.0.0.0:8080"))?
     .run()
     .await
 }
