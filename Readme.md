@@ -32,7 +32,7 @@ The server room data contains a timestamp and an array of rack temperature readi
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/yourusername/server-room-monitoring.git
+git clone https://github.com/jhimy-michel/server-room-api.git
 cd server-room-monitoring
 ```
 
